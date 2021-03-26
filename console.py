@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import shlex
 
 
 class HBNBCommand(cmd.Cmd):
@@ -113,16 +114,27 @@ class HBNBCommand(cmd.Cmd):
         """ Overrides the emptyline method of CMD """
         pass
 
-    def do_create(self, args):
+    def do_create(self, arg):
         """ Create an object of any class"""
+        args = arg.split(' ')
         if not args:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
+        new_instance = HBNBCommand.classes[args[0]]()
         storage.save()
+        args.pop(0)
+        for elem in args:
+            param = elem.split('=')
+            if param[0] in HBNBCommand.types:
+                param[1] = HBNBCommand.types[param[0]](param[1])
+            elif elem[elem.index('=') + 1] == '"':
+                param[1] = param[1].replace("_", " ").replace('"', '')
+            else:
+                continue
+            setattr(new_instance, param[0], param[1])
         print(new_instance.id)
         storage.save()
 
