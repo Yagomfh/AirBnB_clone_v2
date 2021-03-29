@@ -50,10 +50,9 @@ class Place(BaseModel, Base):
             amenities getter
             """
             a_list = []
-            a_all = models.storage.all(Amenity)
-            for a in a_all.values():
-                if a.place_id == self.id:
-                    a_list.append(a.id)
+            for a in  models.storage.all(Amenity):
+                if a.id in self.amenity_ids:
+                    a_list.append(a)
             return a_list
 
         @amenities.setter
@@ -62,4 +61,4 @@ class Place(BaseModel, Base):
             amenities getter
             """
             if obj is type(Amenity):
-                amenity_ids.append(obj.id)
+                self.amenity_ids.append(obj.id)
