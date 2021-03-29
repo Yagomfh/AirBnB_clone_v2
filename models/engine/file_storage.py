@@ -26,9 +26,9 @@ class FileStorage:
         if cls is None:
             return allObj
         res = {}
-        for obj in allObj:
-            if str(cls) == str(type(allObj[obj])):
-                res[obj] = allObj[obj]
+        for obj in self.__objects:
+            if cls.__name__ in obj:
+                res[obj] = self.__objects[obj]
         return res
 
     def new(self, obj):
@@ -57,9 +57,9 @@ class FileStorage:
 
     def delete(self, obj=None):
         """Method to delete an object"""
-        allObj = FileStorage.__objects
         if obj is None:
             return
         key = obj.__class__.__name__ + '.' + obj.id
-        allObj.pop(key)
-        return
+        if key in self.__objects:
+            del self.__objects[key]
+            self.save()
