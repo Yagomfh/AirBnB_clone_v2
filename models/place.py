@@ -2,13 +2,13 @@
 """ Place Module for HBNB project """
 from os import getenv
 from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Float, String, Integer, ForeignKey
+from sqlalchemy import Column, Float, String, Integer, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
 metadata = Base.metadata
 association_table = Table('place_amenity', metadata,
-        Column('place_id', ForeignKey('places.id'), String(60), primary_key=True, nullable=False),
-        Column('amenity_id', ForeignKey('amenities.id'), String(60), primary_key=True, nullable=False)
+        Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
+        Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False)
 )
 
 class Place(BaseModel, Base):
@@ -43,9 +43,9 @@ class Place(BaseModel, Base):
                 if r.state_id == self.id:
                     r_list.append(r)
             return r_list
-    
-    	@property
-    	def amenities(self):
+
+        @property
+        def amenities(self):
             """
             amenities getter
             """
