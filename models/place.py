@@ -60,5 +60,5 @@ class Place(BaseModel, Base):
             """
             amenities getter
             """
-            if obj is type(Amenity):
+            if type(obj) == Amenity:
                 self.amenity_ids.append(obj.id)
