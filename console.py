@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import models
 import shlex
 
 
@@ -117,14 +118,14 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, arg):
         """ Create an object of any class"""
         args = arg.split(' ')
+        dict_args = {}
         if not args:
             print("** class name missing **")
             return
         elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args[0]]()
-        storage.save()
+        class_name = args[0]
         args.pop(0)
         for elem in args:
             param = elem.split('=')
@@ -134,9 +135,10 @@ class HBNBCommand(cmd.Cmd):
                 param[1] = param[1].replace("_", " ").replace('"', '')
             else:
                 continue
-            setattr(new_instance, param[0], param[1])
-        print(new_instance.id)
-        storage.save()
+            dict_args[param[0]] = param[1]
+        new_inst = self.classes[class_name](**dict_args)
+        print(new_inst.id)
+        new_inst.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -209,23 +211,21 @@ class HBNBCommand(cmd.Cmd):
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
 
-    def do_all(self, args):
+    def do_all(self, arg):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        args = arg.split()
+        objects = []
+        if len(args) == 0:
+            objs = storage.all()
+        if args[0] in self.classes:
+            objs = storage.all(self.classes[args[0]])
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
+            print("** class doesn't exist **")
+        for obj in objs:
+            objects.append(str(objs[obj]))
+        print("[", end="")
+        print(", ".join(objects), end="")
+        print("]")
 
     def help_all(self):
         """ Help information for the all command """
