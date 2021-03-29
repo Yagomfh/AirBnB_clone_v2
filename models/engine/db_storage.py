@@ -22,6 +22,7 @@ host = getenv('HBNB_MYSQL_HOST')
 db = getenv('HBNB_MYSQL_DB')
 env = getenv('HBNB_ENV')
 
+
 class DBStorage:
     """interaacts with the MySQL database"""
     __engine = None
@@ -30,7 +31,7 @@ class DBStorage:
     def __init__(self):
         """Instantiate a DBStorage object"""
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(user,pwd, host, db),
+                                      format(user, pwd, host, db),
                                       pool_pre_ping=True)
         if env == "test":
             Base.metadata.drop_all(self.__engine)
@@ -45,7 +46,7 @@ class DBStorage:
                         del obj.__dict__['_sa_instance_state']
                     key = obj.__class__.__name__ + '.' + obj.id
                     all_query[key] = obj
-        return all_query     
+        return all_query
 
     def new(self, obj):
         """add the object to the current database session"""
