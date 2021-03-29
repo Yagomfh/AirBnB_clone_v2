@@ -5,8 +5,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Float, String, Integer, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
-metadata = Base.metadata
-association_table = Table('place_amenity', metadata,
+place_amenity = Table('place_amenity', Base.metadata,
         Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
         Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False)
 )
@@ -29,7 +28,7 @@ class Place(BaseModel, Base):
     amenity_ids = []
     
     reviews = relationship("Review", cascade="delete", backref='place')
-    amenities = relationship("Amenity", secondary=association_table, viewonly=False)
+    amenities = relationship("Amenity", secondary="place_amenity", viewonly=False)
 
     if getenv("HBNB_TYPE_STORAGE") != 'db':
         @property
