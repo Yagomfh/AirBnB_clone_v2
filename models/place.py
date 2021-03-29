@@ -5,6 +5,11 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Float, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 
+metadata = Base.metadata
+association_table = Table('place_amenity', metadata,
+        Column('place_id', ForeignKey('places.id'), String(60), primary_key=True, nullable=False),
+        Column('amenity_id', ForeignKey('amenities.id'), String(60), primary_key=True, nullable=False)
+)
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -24,6 +29,7 @@ class Place(BaseModel, Base):
     amenity_ids = []
     
     reviews = relationship("Review", cascade="delete", backref='place')
+    amenities = relationship("Amenity", secondary=association_table, viewonly=False)
 
     if getenv("HBNB_TYPE_STORAGE") != 'db':
         @property
@@ -31,9 +37,29 @@ class Place(BaseModel, Base):
             """
             reviews getter
             """
-            c_list = []
-            c_all = models.storage.all(Review)
-            for c in c_all.values():
-                if c.state_id == self.id:
-                    c_list.append(c)
-            return c_list
+            r_list = []
+            r_all = models.storage.all(Review)
+            for r in r_all.values():
+                if r.state_id == self.id:
+                    r_list.append(r)
+            return r_list
+    
+    	@property
+    	def amenities(self):
+            """
+            amenities getter
+            """
+            a_list = []
+            a_all = models.storage.all(Amenity)
+            for a in a_all.values():
+                if a.place_id == self.id:
+                    a_list.append(a.id)
+            return a_list
+
+        @amenities.setter
+        def amenities(self, obj):
+            """
+            amenities getter
+            """
+            if obj is type(Amenity):
+                amenity_ids.append(obj.id)
