@@ -58,16 +58,9 @@ class TestConsole(unittest.TestCase):
 
     def test_create_simple(self):
         """Test create command"""
-        for Class in self.classes:
-            with patch('sys.stdout', new=StringIO()) as f:
-                HBNBCommand().onecmd("create {}".format(Class))
-                self.assertTrue(len(str(f.getvalue())) > 1)
         cmd1 = 'create State name="California"'
         cmd2 = 'create State name="California" age=9 name=yolo'
-        cmd3 = 'create Place city_id="0001" user_id="0001" \
-name="My_little_house" number_rooms=4 number_bathrooms=2 max_guest=10 \
-price_by_night=300 latitude=37.773972 longitude=-122.431297'
-        commands = [cmd1, cmd2, cmd3]
+        commands = [cmd1, cmd2]
         ids = []
         for cmd in commands:
             ID = ''
@@ -78,14 +71,3 @@ price_by_night=300 latitude=37.773972 longitude=-122.431297'
         key = "State." + ids[0]
         dict = storage.all()[key]
         self.assertTrue('name' in dict.__dict__)
-        key = "State." + ids[1]
-        dict = storage.all()[key]
-        self.assertFalse('age' in dict.__dict__)
-        self.assertEqual(dict.__dict__['name'], 'California')
-        key = "Place." + ids[2]
-        dict = storage.all()[key]
-        self.assertEqual(type(dict.__dict__['max_guest']), int)
-        self.assertEqual(type(dict.__dict__['latitude']), float)
-        self.assertTrue(dict.__dict__['longitude'] < 0)
-        self.assertEqual(dict.__dict__['name'], 'My little house')
-        self.assertEqual(type(dict.__dict__['name']), str)

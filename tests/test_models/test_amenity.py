@@ -1,19 +1,64 @@
 #!/usr/bin/python3
-""" """
-from tests.test_models.test_base_model import test_basemodel
+"""Unit tests for base model"""
+import unittest
+import pep8
+import inspect
+import json
+from models.base_model import BaseModel
 from models.amenity import Amenity
+from unittest.mock import patch
+from io import StringIO
+import os
+from datetime import datetime
 
 
-class test_Amenity(test_basemodel):
-    """ """
+class TestBaseDocs(unittest.TestCase):
+    """Tests to check the documentation and style of Base class"""
+    @classmethod
+    def setUpClass(cls):
+        """Set up for the doc tests"""
+        cls.base_funcs = inspect.getmembers(Amenity, inspect.isfunction)
 
-    def __init__(self, *args, **kwargs):
-        """ """
-        super().__init__(*args, **kwargs)
-        self.name = "Amenity"
-        self.value = Amenity
+    def test_pep8_conformance_base(self):
+        """Test that models/amenity.py conforms to PEP8."""
+        pep8style = pep8.StyleGuide(quiet=True)
+        result = pep8style.check_files(['models/amenity.py'])
+        self.assertEqual(result.total_errors, 0,
+                         "Found code style errors (and warnings).")
 
-    def test_name2(self):
-        """ """
-        new = self.value()
-        self.assertEqual(type(new.name), str)
+    def test_module_docstring(self):
+        """Tests for the module docstring"""
+        self.assertTrue(len(Amenity.__doc__) >= 1)
+
+    def test_func_docstrings(self):
+        """Tests for the presence of docstrings in all functions"""
+        for func in self.base_funcs:
+            self.assertTrue(len(func[1].__doc__) >= 1)
+
+
+class TestAmenity(unittest.TestCase):
+    """Test for amenity class"""
+    am = Amenity(name="Wifi")
+    am.save()
+
+    def test_Amenity_inheritence(self):
+        '''
+            tests that the Amenity class Inherits from BaseModel
+        '''
+        new_amenity = self.am
+        self.assertIsInstance(new_amenity, BaseModel)
+
+    def test_Amenity_attributes(self):
+        '''
+            Test that Amenity class had name attribute.
+        '''
+        new_amenity = self.am
+        self.assertTrue("name" in new_amenity.__dir__())
+
+    def test_Amenity_attribute_type(self):
+        '''
+            Test that Amenity class had name attribute's type.
+        '''
+        new_amenity = self.am
+        name_value = getattr(new_amenity, "name")
+        self.assertIsInstance(name_value, str)
