@@ -54,6 +54,7 @@ class TestAmenity(unittest.TestCase):
         '''
         new_amenity = self.am
         self.assertTrue("name" in new_amenity.__dir__())
+        self.assertEqual(new_amenity.name, "Wifi")
 
     def test_Amenity_attribute_type(self):
         '''
@@ -62,3 +63,9 @@ class TestAmenity(unittest.TestCase):
         new_amenity = self.am
         name_value = getattr(new_amenity, "name")
         self.assertIsInstance(name_value, str)
+        name_value = getattr(new_amenity, "id")
+        self.assertIsInstance(name_value, str)
+        name_value = getattr(new_amenity, "created_at")
+        self.assertIsInstance(name_value, datetime)
+        name_value = getattr(new_amenity, "updated_at")
+        self.assertIsInstance(name_value, datetime)

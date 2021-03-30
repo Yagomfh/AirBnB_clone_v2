@@ -90,3 +90,12 @@ class TestUser(unittest.TestCase):
         '''
         new = self.user
         self.assertEqual(type(new.password), str)
+
+    def test_base_type(self):
+        '''
+            Test the base types
+        '''
+        new = self.user
+        self.assertEqual(type(new.id), str)
+        self.assertEqual(type(new.created_at), datetime)
+        self.assertEqual(type(new.updated_at), datetime)

@@ -53,7 +53,8 @@ class TestReview(unittest.TestCase):
         self.assertIsInstance(new_review, BaseModel)
 
     def test_Review_attributes(self):
-        """Test that Review class has place_id, user_id and text attributes."""
+        """Test that Review class has place_id, user_id and text
+            attributes."""
         new_review = self.rev
         self.assertTrue("place_id" in new_review.__dir__())
         self.assertTrue("user_id" in new_review.__dir__())
@@ -66,6 +67,12 @@ class TestReview(unittest.TestCase):
         place_id = getattr(new_review, "place_id")
         user_id = getattr(new_review, "user_id")
         text = getattr(new_review, "text")
+        idd = getattr(new_review, "id")
+        created_at = getattr(new_review, "created_at")
+        updated_at = getattr(new_review, "updated_at")
         self.assertIsInstance(place_id, str)
         self.assertIsInstance(user_id, str)
         self.assertIsInstance(text, str)
+        self.assertIsInstance(idd, str)
+        self.assertIsInstance(created_at, datetime)
+        self.assertIsInstance(updated_at, datetime)

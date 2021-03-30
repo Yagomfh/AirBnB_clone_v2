@@ -63,3 +63,9 @@ class TestState(unittest.TestCase):
         new_state = self.state
         name = getattr(new_state, "name")
         self.assertIsInstance(name, str)
+        name = getattr(new_state, "id")
+        self.assertIsInstance(name, str)
+        name = getattr(new_state, "created_at")
+        self.assertIsInstance(name, datetime)
+        name = getattr(new_state, "updated_at")
+        self.assertIsInstance(name, datetime)

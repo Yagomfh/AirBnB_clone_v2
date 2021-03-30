@@ -153,3 +153,24 @@ class TestPlace(unittest.TestCase):
         '''
         city_id = getattr(self.new_place, "city_id")
         self.assertIsInstance(city_id, str)
+        
+    def test_type_id(self):
+        '''
+            Test the type of id
+        '''
+        idd = getattr(self.new_place, "id")
+        self.assertIsInstance(idd, str)
+
+    def test_type_created_at(self):
+        '''
+            Test the type of city_cretaed_at
+        '''
+        created_at = getattr(self.new_place, "created_at")
+        self.assertIsInstance(created_at, datetime)
+
+    def test_type_updated_at(self):
+        '''
+            Test the type of updated_at
+        '''
+        updated_at = getattr(self.new_place, "updated_at")
+        self.assertIsInstance(updated_at, datetime)

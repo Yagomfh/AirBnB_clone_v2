@@ -55,6 +55,12 @@ class TestCity(unittest.TestCase):
         new_city = self.city
         self.assertTrue("state_id" in new_city.__dir__())
         self.assertTrue("name" in new_city.__dir__())
+        name_value = getattr(new_city, "id")
+        self.assertIsInstance(name_value, str)
+        name_value = getattr(new_city, "created_at")
+        self.assertIsInstance(name_value, datetime)
+        name_value = getattr(new_city, "updated_at")
+        self.assertIsInstance(name_value, datetime)
 
     def test_type_name(self):
         '''
