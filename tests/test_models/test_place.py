@@ -153,4 +153,3 @@ class TestPlace(unittest.TestCase):
         '''
         city_id = getattr(self.new_place, "city_id")
         self.assertIsInstance(city_id, str)
-

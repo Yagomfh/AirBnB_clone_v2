@@ -41,6 +41,7 @@ class TestState(unittest.TestCase):
         Test the State class.
     '''
     state = State(name="California")
+
     def test_State_inheritence(self):
         '''
             Test that State class inherits from BaseModel.
