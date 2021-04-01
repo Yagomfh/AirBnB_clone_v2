@@ -42,8 +42,6 @@ class DBStorage:
         for Class in classes:
             if cls is None or cls is classes[Class] or cls is classes:
                 for obj in self.__session.query(classes[Class]).all():
-                    if '_sa_instance_state' in obj.__dict__:
-                        del obj.__dict__['_sa_instance_state']
                     key = obj.__class__.__name__ + '.' + obj.id
                     all_query[key] = obj
         return all_query
