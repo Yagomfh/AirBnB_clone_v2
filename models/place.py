@@ -4,6 +4,8 @@ from os import getenv
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Float, String, Integer, ForeignKey, Table
 from sqlalchemy.orm import relationship
+import models
+from models.amenity import Amenity
 
 place_amenity = Table('place_amenity', Base.metadata,
                       Column('place_id', String(60),
@@ -54,7 +56,7 @@ class Place(BaseModel, Base):
             amenities getter
             """
             a_list = []
-            for a in models.storage.all(Amenity):
+            for a in models.storage.all(Amenity).values():
                 if a.id in self.amenity_ids:
                     a_list.append(a)
             return a_list
