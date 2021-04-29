@@ -40,7 +40,7 @@ class DBStorage:
         """query on the current database session"""
         all_query = {}
         for Class in classes:
-            if cls is None or cls is classes[Class] or cls in classes:
+            if cls is None or cls is classes[Class] or cls is classes:
                 for obj in self.__session.query(classes[Class]).all():
                     key = obj.__class__.__name__ + '.' + obj.id
                     all_query[key] = obj
