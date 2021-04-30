@@ -26,6 +26,7 @@ def states_list():
         data.append(tmp)
     return render_template('8-cities_by_states.html', data=data)
 
+
 @app.teardown_appcontext
 def storage_close(exception):
     """Teardown"""

@@ -2,20 +2,25 @@
 """Flask module"""
 from flask import Flask, render_template
 from models import storage
+from models.user import User
+from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
+from models.review import Review
 
 
 app = Flask(__name__)
 
-@app.route('/hbnb_filters', strict_slashes=False)
+@app.route('/hbnb', strict_slashes=False)
 def hbnb_filters():
     states = storage.all(State)
     amenities = storage.all(Amenity)
-    print(amenities)
-    return render_template('10-hbnb_filters.html',
-                           states=states, amenities=amenities)
+    places = storage.all(Place)
+    users = storage.all(User)
+    return render_template('100-hbnb.html',
+                           states=states, amenities=amenities,
+                           places=places, users=users)
 
 
 @app.teardown_appcontext
